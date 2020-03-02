@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LocalizedApp</string>
+    <string name="prevbutton">Previous</string>
+    <string name="nextbutton">Next</string>
+</resources>
