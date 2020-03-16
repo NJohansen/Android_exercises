@@ -1,21 +1,15 @@
 package com.example.homework_exercise_1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-public class DateActivity extends AppCompatActivity {
+public class DateActivity extends BaseActivity {
 
     public DatePicker dateOfBirthPicker;
     public String name;
@@ -31,12 +25,18 @@ public class DateActivity extends AppCompatActivity {
         dateOfBirthPicker.updateDate(1994, 8, 6);
 
 
-        ((Button) findViewById(R.id.nextButton)).setOnClickListener(new View.OnClickListener() {
+        ( findViewById(R.id.nextButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToNextActivity();
             }
         });
+
+        if(currentUser.dateOfBirth != 0){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentUser.dateOfBirth * 1000);
+            dateOfBirthPicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        }
     }
 
     @Override
@@ -94,6 +94,8 @@ public class DateActivity extends AppCompatActivity {
         String formatedDate = sdf.format(calendar.getTime());
         intent.putExtra(Constants.DATE_KEY, formatedDate);
 
+        currentUser.dateOfBirth = calendar.getTimeInMillis() / 1000;
+        db.userDAO().update(currentUser);
         startActivity(intent);
     }
 }

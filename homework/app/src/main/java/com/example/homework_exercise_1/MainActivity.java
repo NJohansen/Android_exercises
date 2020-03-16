@@ -1,19 +1,14 @@
 package com.example.homework_exercise_1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private EditText getName;
 
@@ -31,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
                 goToNextActivity();
             }
         });
+
+        if(!TextUtils.isEmpty(currentUser.name)){
+            getName.setText(currentUser.name);
+        }
     }
 
     @Override
@@ -85,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(getName.getText())) {
             Intent intent = new Intent(this, AdressActivity.class);
             intent.putExtra(Constants.NAME_KEY, getName.getText().toString());
+            currentUser.name = getName.getText().toString();
+            db.userDAO().update(currentUser);
             startActivity(intent);
         }
     }

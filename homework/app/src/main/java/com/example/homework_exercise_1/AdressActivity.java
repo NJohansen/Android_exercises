@@ -1,16 +1,13 @@
 package com.example.homework_exercise_1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
-public class AdressActivity extends AppCompatActivity {
+public class AdressActivity extends BaseActivity {
 
     private EditText getAdress;
 
@@ -21,19 +18,23 @@ public class AdressActivity extends AppCompatActivity {
 
         getAdress = findViewById(R.id.getAdress);
 
-        ((Button) findViewById(R.id.nextButton)).setOnClickListener(new View.OnClickListener() {
+        ( findViewById(R.id.nextButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToNextActivity();
             }
         });
 
-        ((Button) findViewById(R.id.previousButton)).setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.previousButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goPrevious();
             }
         });
+
+        if(!TextUtils.isEmpty(currentUser.address)){
+            getAdress.setText(currentUser.address);
+        }
     }
 
     @Override
@@ -78,8 +79,9 @@ public class AdressActivity extends AppCompatActivity {
             //get the intent from first
             Intent i = getIntent();
             i.setClass(this, DateActivity.class);
-
             i.putExtra(Constants.ADRESS_KEY, getAdress.getText().toString());
+            currentUser.address = getAdress.getText().toString();
+            db.userDAO().update(currentUser);
             startActivity(i);
         }
     }
@@ -87,7 +89,8 @@ public class AdressActivity extends AppCompatActivity {
     private void goPrevious(){
         Intent i = getIntent();
         i.setClass(this, MainActivity.class);
-
+        currentUser.address = getAdress.getText().toString();
+        db.userDAO().update(currentUser);
         startActivity(i);
     }
 }
