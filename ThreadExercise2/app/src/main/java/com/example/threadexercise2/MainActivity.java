@@ -15,7 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     //Example of using Butterknife in your application
-
     final String url = "https://api.icndb.com/";
     TextSwitcher textSwitcher;
     //Retrofit stuff
